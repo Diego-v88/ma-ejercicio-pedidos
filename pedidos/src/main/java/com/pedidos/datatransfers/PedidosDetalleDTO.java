@@ -1,8 +1,6 @@
-package com.pedidos.dtobasemodel;
+package com.pedidos.datatransfers;
 
 import java.math.BigDecimal;
-
-import com.pedidos.datatransfers.PersistenDTOObject;
 
 public class PedidosDetalleDTO {
 	

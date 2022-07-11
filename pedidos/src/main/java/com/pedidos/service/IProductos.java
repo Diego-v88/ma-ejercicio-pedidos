@@ -8,8 +8,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.pedidos.dao.PedidosException;
-import com.pedidos.dtobasemodel.PedidosCabeceraDTO;
-import com.pedidos.dtobasemodel.ProductosDTO;
+import com.pedidos.datatransfers.PedidosCabeceraDTO;
+import com.pedidos.datatransfers.ProductosDTO;
 
 public interface IProductos {
 	

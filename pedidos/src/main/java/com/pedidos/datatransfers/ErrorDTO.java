@@ -1,4 +1,4 @@
-package com.pedidos.dtobasemodel;
+package com.pedidos.datatransfers;
 
 public class ErrorDTO {
 

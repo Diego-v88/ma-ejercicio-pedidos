@@ -1,12 +1,8 @@
-package com.pedidos.dtobasemodel;
+package com.pedidos.datatransfers;
 
 import java.math.BigDecimal;
 
-import com.pedidos.datatransfers.PersistenDTOObject;
-
-public class ProductosDTO extends PersistenDTOObject {
-
-	private static final long serialVersionUID = 2419551671495358595L;
+public class ProductosDTO {
 	
 	private String nombre;
 	private String descripcionCorta;

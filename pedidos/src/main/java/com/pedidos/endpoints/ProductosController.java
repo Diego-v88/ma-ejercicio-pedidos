@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.pedidos.dao.PedidosException;
-import com.pedidos.dtobasemodel.ErrorDTO;
-import com.pedidos.dtobasemodel.ProductosDTO;
+import com.pedidos.datatransfers.ErrorDTO;
+import com.pedidos.datatransfers.ProductosDTO;
 import com.pedidos.service.IProductos;
 
 /**
