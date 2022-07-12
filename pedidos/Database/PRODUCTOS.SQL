@@ -8,7 +8,7 @@ BEGIN
     UPPER(table_name) = UPPER('PRODUCTOS');
     IF scount = 0 THEN
         CREATE TABLE PRODUCTOS (
-                ID SERIAL NOT NULL,
+                ID UUID NOT NULL,
                 NOMBRE VARCHAR(60) NOT NULL,
                 DESCRIPCION_CORTA VARCHAR(100) NOT NULL,
                 DESCRIPCION_LARGA VARCHAR(100) NOT NULL,

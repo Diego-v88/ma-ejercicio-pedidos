@@ -3,6 +3,7 @@ package com.pedidos.models;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -14,6 +15,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
+
 @Entity
 @Table(name = "PRODUCTOS")
 public class Productos implements java.io.Serializable {
@@ -21,9 +24,13 @@ public class Productos implements java.io.Serializable {
 	private static final long serialVersionUID = -4268557909052675411L;
 	
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+        name = "UUID",
+        strategy = "org.hibernate.id.UUIDGenerator"
+    )
     @Column(name = "ID", updatable = false, nullable = false)
-	private Integer id;
+	private UUID id;
 	@Column(name = "NOMBRE")
 	private String nombre;
 	@Column(name = "DESCRIPCION_CORTA")
@@ -36,10 +43,10 @@ public class Productos implements java.io.Serializable {
     private List<PedidosDetalle> detalle = new ArrayList<>();
 	
 	
-	public Integer getId() {
+	public UUID getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+	public void setId(UUID id) {
 		this.id = id;
 	}
 	

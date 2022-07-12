@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.transaction.Transactional;
 
+import org.apache.commons.validator.routines.EmailValidator;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,7 +27,7 @@ import com.pedidos.models.Productos;
 
 @Service
 @Transactional
-public class ProductosImpl implements IProductos {
+public class ProductoPedidosImpl implements IProductoPedidosService {
 
 	@Autowired
     private ProductoRepoImpl productodao;
@@ -47,12 +49,12 @@ public class ProductosImpl implements IProductos {
 	}
 
 	@Override
-	public void deleteProducto(Integer id) throws PedidosException {
+	public void deleteProducto(UUID id) throws PedidosException {
 		productodao.deleteById(id);
 	}
 
 	@Override
-	public ProductosDTO getProducto(Integer id) throws PedidosException {
+	public ProductosDTO getProducto(UUID id) throws PedidosException {
 		ProductosDTO result = null;
 		Optional<Productos> o = productodao.findById(id);
 		if (o!=null && !o.isEmpty()) {
@@ -67,7 +69,7 @@ public class ProductosImpl implements IProductos {
 	}
 
 	@Override
-	public Integer putProducto(ProductosDTO productodto, Integer id) throws PedidosException {
+	public UUID putProducto(ProductosDTO productodto, UUID id) throws PedidosException {
 		Productos producto = modelMapper.map(productodto, Productos.class);
 		if (producto !=null) {
 			producto.setId(id);
@@ -109,7 +111,7 @@ public class ProductosImpl implements IProductos {
 			PedidosDetalle det = new PedidosDetalle();
 			det.setCantidad(detalle.getCantidad());
 			cantidad = cantidad + detalle.getCantidad();
-			Optional<Productos> o = productodao.findById(detalle.getProducto());
+			Optional<Productos> o = productodao.findById(UUID.fromString(detalle.getProducto()));
 			if (o!=null && !o.isEmpty()) {
 				Productos pr = o.get();
 				det.setProducto(pr);
@@ -140,6 +142,10 @@ public class ProductosImpl implements IProductos {
 		if (pedido.getDetalle() == null || pedido.getDetalle().isEmpty()) {
 			throw new PedidosException("EL pedido no posee detalle");
 		}
+		boolean valid = EmailValidator.getInstance().isValid(pedido.getEmail());
+		if (!valid) {
+			throw new PedidosException("Direccion email incorrecta");
+		}
 		for (PedidosDetalleDTO det : pedido.getDetalle()) {
 			if (det.getCantidad() == null || det.getCantidad() < 0) {
 				throw new PedidosException("El pedido no posee cantidad");
@@ -163,7 +169,7 @@ public class ProductosImpl implements IProductos {
 			detalleDto.setCantidad(persistentDetalle.getCantidad());
 			detalleDto.setImporte(persistentDetalle.getPrecioUnitario());
 			detalleDto.setNombre(persistentDetalle.getProducto().getNombre());
-			detalleDto.setProducto(persistentDetalle.getProducto().getId());
+			detalleDto.setProducto(persistentDetalle.getProducto().getId().toString());
 			dto.getDetalle().add(detalleDto);
 		}
 		return dto;

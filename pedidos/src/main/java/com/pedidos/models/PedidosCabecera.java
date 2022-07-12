@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -18,6 +19,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import com.pedidos.enums.EstadoPedido;
 
 @Entity
@@ -27,9 +30,13 @@ public class PedidosCabecera implements java.io.Serializable {
 	private static final long serialVersionUID = -3097006336946961217L;
 	
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+        name = "UUID",
+        strategy = "org.hibernate.id.UUIDGenerator"
+    )
     @Column(name = "ID", updatable = false, nullable = false)
-	private Integer id;
+	private UUID id;
 	
 	@Column(name = "DIRECCION")
 	private String direccion;
@@ -122,10 +129,10 @@ public class PedidosCabecera implements java.io.Serializable {
 		this.estado = estado;
 	}
 	
-	public Integer getId() {
+	public UUID getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+	public void setId(UUID id) {
 		this.id = id;
 	}
 	

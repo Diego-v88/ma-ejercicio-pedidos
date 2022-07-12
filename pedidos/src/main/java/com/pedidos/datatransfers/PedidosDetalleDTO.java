@@ -4,15 +4,15 @@ import java.math.BigDecimal;
 
 public class PedidosDetalleDTO {
 	
-	private Integer producto;
+	private String producto;
 	private Integer cantidad;
 	private BigDecimal importe;
 	private String nombre;
 	
-	public Integer getProducto() {
+	public String getProducto() {
 		return producto;
 	}
-	public void setProducto(Integer producto) {
+	public void setProducto(String producto) {
 		this.producto = producto;
 	}
 	public Integer getCantidad() {

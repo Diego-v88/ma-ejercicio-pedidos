@@ -1,36 +1,38 @@
 package com.pedidos.endpoints;
 
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.pedidos.dao.PedidosException;
 import com.pedidos.datatransfers.ErrorDTO;
 import com.pedidos.datatransfers.ProductosDTO;
-import com.pedidos.service.IProductos;
+import com.pedidos.service.IProductoPedidosService;
 
 /**
 *
 * @author Diego
 */
 
-@Controller
+@RestController
 public class ProductosController {
 	
     @Autowired
-    private IProductos productosService;
+    private IProductoPedidosService productosService;
     
     @RequestMapping(value="/productos/{uuid}", produces="application/json; charset=UTF-8", method = RequestMethod.GET)
-    public @ResponseBody ResponseEntity<Object> getProductoByUUID(@PathVariable Integer uuid){
+    public @ResponseBody ResponseEntity<Object> getProductoByUUID(@PathVariable String uuid){
     	ProductosDTO result = null;
     	try {
-			result = productosService.getProducto(uuid);
+			result = productosService.getProducto(UUID.fromString(uuid));
 		} catch (PedidosException e) {
 			return new ResponseEntity<>(new ProductosDTO(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -41,9 +43,9 @@ public class ProductosController {
     }
     
     @RequestMapping(value="/productos/{uuid}", produces="application/json; charset=UTF-8", method = RequestMethod.DELETE)
-    public @ResponseBody ResponseEntity<Object> deleteProductoByUUID(@PathVariable Integer uuid){
+    public @ResponseBody ResponseEntity<Object> deleteProductoByUUID(@PathVariable String uuid){
     	try {
-			productosService.deleteProducto(uuid);
+			productosService.deleteProducto(UUID.fromString(uuid));
 		} catch (PedidosException e) {
 			ErrorDTO err = new ErrorDTO();
 			err.setError("Error al eliminar");
@@ -53,10 +55,10 @@ public class ProductosController {
     }
     
     @RequestMapping(value="/productos/{uuid}", produces="application/json; charset=UTF-8", method = RequestMethod.PUT)
-    public @ResponseBody ResponseEntity<Object> putProducto(@PathVariable Integer uuid, @RequestBody ProductosDTO producto){
-    	Integer result = null;
+    public @ResponseBody ResponseEntity<Object> putProducto(@PathVariable String uuid, @RequestBody ProductosDTO producto){
+    	UUID result = null;
     	try {
-			result = productosService.putProducto(producto, uuid);
+			result = productosService.putProducto(producto, UUID.fromString(uuid));
 		} catch (PedidosException e) {
 			ErrorDTO err = new ErrorDTO();
 			err.setError("Error al modificar");

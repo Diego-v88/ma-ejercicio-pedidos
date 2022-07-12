@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.pedidos.dao.PedidosException;
 import com.pedidos.datatransfers.ErrorDTO;
 import com.pedidos.datatransfers.PedidosCabeceraDTO;
-import com.pedidos.service.IProductos;
+import com.pedidos.service.IProductoPedidosService;
 
 /**
 *
@@ -29,7 +28,7 @@ import com.pedidos.service.IProductos;
 public class PedidosController {
 	
     @Autowired
-    private IProductos pedidosService;
+    private IProductoPedidosService pedidosService;
     
     private static final String REQ_PARAM_FECHA = "fecha";
     
@@ -38,6 +37,9 @@ public class PedidosController {
     	PedidosCabeceraDTO result = null;
     	try {
 			result = pedidosService.addPedido(cabecera);
+			if (result == null) {
+				return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+			}
 		} catch (PedidosException e) {
 			ErrorDTO err = new ErrorDTO();
 			err.setError(e.getMessage());

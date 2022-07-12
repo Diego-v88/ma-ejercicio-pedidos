@@ -8,7 +8,7 @@ BEGIN
     UPPER(table_name) = UPPER('PEDIDOS_CABECERA');
     IF scount = 0 THEN
         CREATE TABLE PEDIDOS_CABECERA (
-                ID SERIAL NOT NULL,
+                ID UUID NOT NULL,
                 DIRECCION VARCHAR(60) NOT NULL,
                 EMAIL VARCHAR(60) NOT NULL,
                 TELEFONO VARCHAR(60) NOT NULL,
