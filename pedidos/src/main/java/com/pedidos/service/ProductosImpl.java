@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import javax.persistence.Query;
 import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
@@ -34,11 +33,11 @@ public class ProductosImpl implements IProductos {
 	@Autowired
     private PedidosRepoImpl pedidodao;
 	
+	
 	private ModelMapper modelMapper = new ModelMapper();
 	
 	@Override
 	public void addProducto(ProductosDTO productoDTO) throws PedidosException {
-		
 		try {
 			Productos producto = modelMapper.map(productoDTO, Productos.class);
 			productodao.save(producto);
@@ -90,6 +89,7 @@ public class ProductosImpl implements IProductos {
 
 	@Override
 	public PedidosCabeceraDTO addPedido(PedidosCabeceraDTO pedido) throws PedidosException {
+		validateAddPedido(pedido);
 		Integer cantidad = 0;
 		BigDecimal total = BigDecimal.ZERO;
 		
@@ -118,9 +118,8 @@ public class ProductosImpl implements IProductos {
 				detalle.setNombre(pr.getNombre());
 				det.setCabecera(pc);
 				total = total.add(pr.getPrecioUnitario());
-				
 			} else {
-				throw new PedidosException("Pedido incorrecto");
+				throw new PedidosException("El producto no existe");
 			}
 			pc.getDetalle().add(det);
 		}
@@ -135,6 +134,17 @@ public class ProductosImpl implements IProductos {
 		}
 		pedidodao.save(pc);
 		return pedido;
+	}
+	
+	private void validateAddPedido(PedidosCabeceraDTO pedido) throws PedidosException {
+		if (pedido.getDetalle() == null || pedido.getDetalle().isEmpty()) {
+			throw new PedidosException("EL pedido no posee detalle");
+		}
+		for (PedidosDetalleDTO det : pedido.getDetalle()) {
+			if (det.getCantidad() == null || det.getCantidad() < 0) {
+				throw new PedidosException("El pedido no posee cantidad");
+			}
+		}
 	}
 	
 	private PedidosCabeceraDTO getDatatransfer(PedidosCabecera persistent) {

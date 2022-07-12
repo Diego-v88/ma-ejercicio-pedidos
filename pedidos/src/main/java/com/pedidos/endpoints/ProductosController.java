@@ -49,7 +49,7 @@ public class ProductosController {
 			err.setError("Error al eliminar");
 			return new ResponseEntity<>(err, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-        return new ResponseEntity<>(new ProductosDTO(), HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
     
     @RequestMapping(value="/productos/{uuid}", produces="application/json; charset=UTF-8", method = RequestMethod.PUT)
@@ -65,7 +65,7 @@ public class ProductosController {
     	if (result == null) {
     		return new ResponseEntity<>(new ErrorDTO(), HttpStatus.FOUND);
 		}
-        return new ResponseEntity<>(result, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
     @RequestMapping(value="/productos", produces="application/json; charset=UTF-8", method = RequestMethod.POST)
@@ -77,7 +77,7 @@ public class ProductosController {
 			err.setError("Error al agregar");
 			return new ResponseEntity<>(err, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-        return new ResponseEntity<>(null, HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
     
 }

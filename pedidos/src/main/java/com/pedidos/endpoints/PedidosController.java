@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.pedidos.dao.PedidosException;
 import com.pedidos.datatransfers.ErrorDTO;
@@ -24,7 +25,7 @@ import com.pedidos.service.IProductos;
 * @author Diego
 */
 
-@Controller
+@RestController
 public class PedidosController {
 	
     @Autowired
@@ -32,7 +33,7 @@ public class PedidosController {
     
     private static final String REQ_PARAM_FECHA = "fecha";
     
-    @RequestMapping(value="/pedidos", produces="application/json; charset=UTF-8", method = RequestMethod.POST)
+    @RequestMapping(value="/pedidos", produces="application/json", method = RequestMethod.POST)
     public @ResponseBody ResponseEntity<Object> addPedido(@RequestBody PedidosCabeceraDTO cabecera){
     	PedidosCabeceraDTO result = null;
     	try {
@@ -45,7 +46,7 @@ public class PedidosController {
         return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
-    @RequestMapping(value="/pedidos", produces="application/json; charset=UTF-8", method = RequestMethod.GET)
+    @RequestMapping(value="/pedidos", produces="application/json", method = RequestMethod.GET)
     public @ResponseBody ResponseEntity<Object> getPedidoByDate(@RequestParam(REQ_PARAM_FECHA) 
     @DateTimeFormat(pattern = "yyyy-MM-dd") Date date){
     	List<PedidosCabeceraDTO> result = null;
