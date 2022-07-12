@@ -119,7 +119,7 @@ public class ProductoPedidosImpl implements IProductoPedidosService {
 				detalle.setImporte(pr.getPrecioUnitario());
 				detalle.setNombre(pr.getNombre());
 				det.setCabecera(pc);
-				total = total.add(pr.getPrecioUnitario());
+				total = total.add(pr.getPrecioUnitario()).multiply(BigDecimal.valueOf(detalle.getCantidad()));
 			} else {
 				throw new PedidosException("El producto no existe");
 			}
